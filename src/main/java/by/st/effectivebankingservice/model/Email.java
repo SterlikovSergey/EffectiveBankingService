@@ -1,6 +1,7 @@
 package by.st.effectivebankingservice.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -23,5 +24,6 @@ public class Email {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }

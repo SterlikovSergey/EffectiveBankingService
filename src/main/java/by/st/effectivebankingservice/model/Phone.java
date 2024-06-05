@@ -1,6 +1,7 @@
 
 package by.st.effectivebankingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,9 +19,10 @@ public class Phone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String phone;
+    private String number;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }
