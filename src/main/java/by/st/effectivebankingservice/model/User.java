@@ -1,5 +1,6 @@
 package by.st.effectivebankingservice.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -39,9 +40,11 @@ public class User implements UserDetails {
     private LocalDate birthday;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Email> emails;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Phone> phones;
 
     @OneToOne(cascade = CascadeType.ALL)

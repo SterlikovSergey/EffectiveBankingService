@@ -8,9 +8,7 @@ import by.st.effectivebankingservice.model.User;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class UserMapper {
@@ -24,7 +22,7 @@ public class UserMapper {
         emails.add(email);
 
         Phone phone = new Phone();
-        phone.setPhone(dto.getPhone());
+        phone.setNumber(dto.getPhone());
         List<Phone> phones = new ArrayList<>();
         phones.add(phone);
 

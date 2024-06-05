@@ -6,6 +6,7 @@ import by.st.effectivebankingservice.dtos.JwtResponse;
 import by.st.effectivebankingservice.exception.handler.AppError;
 import by.st.effectivebankingservice.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
@@ -30,6 +31,7 @@ public class AuthController {
 
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
+        log.info(authRequest.toString());
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException e) {
