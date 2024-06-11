@@ -9,8 +9,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,13 +23,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
     private final UserMapper mapper;
+
     @Operation(summary = "get user by id")
     @GetMapping("/{id}")
-        @ApiResponse(code = 404, message = "User not found")
+    @ApiResponse(code = 404, message = "User not found")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
-
 
 
     @PostMapping("/signup")
@@ -35,5 +40,14 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-
+    @GetMapping("/search")
+    public ResponseEntity<Page<User>> searchUsers(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthday,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) String email,
+            Pageable pageable) {
+        Page<User> users = userService.searchUsers(birthday, phone, fullName, email, pageable);
+        return ResponseEntity.ok(users);
+    }
 }
