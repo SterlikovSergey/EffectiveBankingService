@@ -25,6 +25,7 @@ public class PhoneService {
     public void delete(Long phoneId) {
         if(phoneRepository.countPhonesById(phoneId) <= 1) {
             throw new CannotDeleteEmailException("Must have at least one email address");
+
         }
         phoneRepository.deleteById(phoneId);
     }
