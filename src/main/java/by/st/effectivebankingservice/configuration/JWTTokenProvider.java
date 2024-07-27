@@ -15,18 +15,15 @@ import java.util.stream.Collectors;
 
 @Component
 public class JWTTokenProvider {
+    private final UserDetailsService userDetailsService;
     @Value("${jwt.secret}")
     private String jwtSecret;
-
     @Value("${jwt.lifetime}")
     private Duration jwtExpirationInMs;
-
-    private final UserDetailsService userDetailsService;
 
     public JWTTokenProvider(@Qualifier("userService") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-
 
     public String generateToken(UserDetails userDetails) {
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());

@@ -1,4 +1,3 @@
-
 package by.st.effectivebankingservice.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;

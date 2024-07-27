@@ -1,8 +1,6 @@
 package by.st.effectivebankingservice.exception.handler;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
@@ -11,7 +9,6 @@ public class ErrorDetails {
     private String timestamp;
     private String message;
     private String errorDetailsMethodName;
-
 
     public ErrorDetails(String timestamp, String message, String errorDetailsMethodName) {
         super();

@@ -28,13 +28,11 @@ public class User implements UserDetails {
 
     private String username;
 
-    private String  password;
+    private String password;
 
     private String firstName;
 
     private String lastName;
-
-
 
     @ManyToMany
     @JoinTable(name = "users_roles",
@@ -46,12 +44,12 @@ public class User implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
     @ToString.Exclude
     private List<Email> emails;
 
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
     @ToString.Exclude
     private List<Phone> phones;

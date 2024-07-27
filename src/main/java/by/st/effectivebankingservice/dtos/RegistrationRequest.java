@@ -25,5 +25,4 @@ public class RegistrationRequest {
     private String phone;
 
     private String email;
-
 }

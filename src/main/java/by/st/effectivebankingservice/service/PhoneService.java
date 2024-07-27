@@ -1,6 +1,5 @@
 package by.st.effectivebankingservice.service;
 
-import by.st.effectivebankingservice.exception.CannotDeleteEmailException;
 import by.st.effectivebankingservice.exception.CannotDeletePhoneException;
 import by.st.effectivebankingservice.exception.PhoneExistException;
 import by.st.effectivebankingservice.model.Phone;
