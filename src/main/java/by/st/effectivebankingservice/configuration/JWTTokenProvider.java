@@ -47,6 +47,16 @@ public class JWTTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     public String getUsernameFromToken(String token) {
         return getClaims(token).getSubject();
     }
@@ -60,5 +70,9 @@ public class JWTTokenProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public UserDetails loadUserByUsername(String username) {
+        return userDetailsService.loadUserByUsername(username);
     }
 }

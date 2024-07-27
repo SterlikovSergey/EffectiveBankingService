@@ -34,6 +34,8 @@ public class User implements UserDetails {
 
     private String lastName;
 
+
+
     @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -44,12 +46,12 @@ public class User implements UserDetails {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
     @JsonManagedReference
     @ToString.Exclude
     private List<Email> emails;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "user")
     @JsonManagedReference
     @ToString.Exclude
     private List<Phone> phones;

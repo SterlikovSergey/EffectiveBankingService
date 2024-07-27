@@ -9,4 +9,5 @@ public interface PhoneRepository extends JpaRepository<Phone, Long> {
 
     int countPhonesById(Long id);
     boolean existsByNumber(String number);
+    int countPhoneByUserId(Long userId);
 }
