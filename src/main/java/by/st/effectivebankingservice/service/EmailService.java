@@ -23,12 +23,13 @@ public class EmailService {
         return emailRepository.save(newEmail);
     }
 
-    public void delete(Long emailId) {
-        if(emailRepository.countEmailById(emailId) <= 1) {
-           throw new CannotDeleteEmailException("Must have at least one email address");
+    public void delete(Long emailId, User user) {
+        if (emailRepository.countEmailByUserId(user.getId()) <= 1) {
+            throw new CannotDeleteEmailException("Must have at least one email address");
         }
         emailRepository.deleteById(emailId);
     }
+
     private boolean isEmailUnique(String email) {
         return !emailRepository.existsByEmail(email);
     }

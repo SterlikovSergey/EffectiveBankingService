@@ -26,12 +26,15 @@ public class UserMapper {
         List<Phone> phones = new ArrayList<>();
         phones.add(phone);
 
-         return User
+        return User
                 .builder()
                 .username(dto.getUsername())
+                .firstName(dto.getFirstName())
+                .lastName(dto.getLastName())
+                .birthday(dto.getBirthday())
                 .password(dto.getPassword())
                 .emails(emails)
-                 .phones(phones)
+                .phones(phones)
                 .account(account)
                 .build();
     }

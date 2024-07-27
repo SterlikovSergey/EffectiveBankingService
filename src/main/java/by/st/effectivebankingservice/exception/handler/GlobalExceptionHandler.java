@@ -18,6 +18,15 @@ public class GlobalExceptionHandler {
     private static final String ERROR_OCCURRED_IN_METHOD = "Error occurred in method: ";
     private static final String IN_FILE_NAME = " in file name: ";
 
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<Object> handleInsufficientFundsException(InsufficientFundsException e) {
+        String errorDetails = "Error occurred in method: " + e.getStackTrace()[0].getMethodName()
+                + " in file: " + e.getStackTrace()[1].getFileName();
+        ErrorDetails response = new ErrorDetails(dataTimeUtil.localDateTimeFormatter(LocalDateTime.now()),
+                e.getMessage(), errorDetails);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(CannotDeletePhoneException.class)
     public ResponseEntity<Object> handleCannotDeletePhoneException(CannotDeletePhoneException e) {
         String errorDetails = ERROR_OCCURRED_IN_METHOD + e.getStackTrace()[0].getMethodName()
@@ -26,7 +35,6 @@ public class GlobalExceptionHandler {
                 e.getMessage(), errorDetails);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-
 
     @ExceptionHandler(PhoneExistException.class)
     public ResponseEntity<Object> handlePhoneExistExceptionException(PhoneExistException e) {
@@ -37,6 +45,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(PhoneNotFoundException.class)
+    public ResponseEntity<Object> handlePhoneNotFoundException(PhoneNotFoundException e) {
+        String errorDetails = ERROR_OCCURRED_IN_METHOD + e.getStackTrace()[0].getMethodName()
+                + IN_FILE_NAME + e.getStackTrace()[1].getFileName();
+        ErrorDetails response = new ErrorDetails(dataTimeUtil.localDateTimeFormatter(LocalDateTime.now()),
+                e.getMessage(), errorDetails);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(CannotDeleteEmailException.class)
     public ResponseEntity<Object> handleCannotDeleteEmailException(CannotDeleteEmailException e) {
         String errorDetails = ERROR_OCCURRED_IN_METHOD + e.getStackTrace()[0].getMethodName()
@@ -44,6 +61,15 @@ public class GlobalExceptionHandler {
         ErrorDetails response = new ErrorDetails(dataTimeUtil.localDateTimeFormatter(LocalDateTime.now()),
                 e.getMessage(), errorDetails);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<Object> handleEmailNotFoundException(EmailNotFoundException e) {
+        String errorDetails = ERROR_OCCURRED_IN_METHOD + e.getStackTrace()[0].getMethodName()
+                + IN_FILE_NAME + e.getStackTrace()[1].getFileName();
+        ErrorDetails response = new ErrorDetails(dataTimeUtil.localDateTimeFormatter(LocalDateTime.now()),
+                e.getMessage(), errorDetails);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(EmailExistException.class)
@@ -70,6 +96,6 @@ public class GlobalExceptionHandler {
                 + IN_FILE_NAME + e.getStackTrace()[1].getFileName();
         ErrorDetails response = new ErrorDetails(dataTimeUtil.localDateTimeFormatter(LocalDateTime.now()),
                 e.getMessage(), errorDetails);
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

@@ -15,18 +15,15 @@ import java.util.stream.Collectors;
 
 @Component
 public class JWTTokenProvider {
+    private final UserDetailsService userDetailsService;
     @Value("${jwt.secret}")
     private String jwtSecret;
-
     @Value("${jwt.lifetime}")
     private Duration jwtExpirationInMs;
-
-    private final UserDetailsService userDetailsService;
 
     public JWTTokenProvider(@Qualifier("userService") UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
-
 
     public String generateToken(UserDetails userDetails) {
         Claims claims = Jwts.claims().setSubject(userDetails.getUsername());
@@ -47,6 +44,16 @@ public class JWTTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     public String getUsernameFromToken(String token) {
         return getClaims(token).getSubject();
     }
@@ -60,5 +67,9 @@ public class JWTTokenProvider {
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public UserDetails loadUserByUsername(String username) {
+        return userDetailsService.loadUserByUsername(username);
     }
 }

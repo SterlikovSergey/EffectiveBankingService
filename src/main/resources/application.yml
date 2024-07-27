@@ -16,9 +16,12 @@ spring:
     show-sql: ${SHOW_SQL}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: ${POSTGRES_SCHEMA}
+    open-in-view: false
+  data:
+    rest:
+      base-path: /
+      return-body-on-create: true
 jwt:
   secret: ${JWT_SECRET}
   lifetime: ${JWT_EXPIRATION}
-
