@@ -31,7 +31,7 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    @Scheduled(fixedRate = 60000) // Run every minute
+    @Scheduled(fixedRate = 60000)
     public void updateBalances() {
         List<Account> accounts = accountRepository.findAll();
         for (Account account : accounts) {
