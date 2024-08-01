@@ -1,0 +1,32 @@
+version: '3.1'
+
+volumes:
+  pg_effectiveBankingService:
+
+services:
+  pg_effectiveBankingService_db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pg_effectiveBankingService_db
+    volumes:
+      - pg_effectiveBankingService:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+  app:
+    restart: always
+    build: .
+    ports:
+      - "127.0.0.1:8898:8898"
+    depends_on:
+      - pg_effectiveBankingService_db
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://pg_effectiveBankingService_db:5432/pg_effectiveBankingService_db'
+      JAVA_OPTS: '-Xms512m'
+
+
+
+
+
