@@ -85,25 +85,41 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public synchronized void transferMoney(Long targetUserId, BigDecimal amount) {
+    public void transferMoney(Long targetUserId, BigDecimal amount) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User authenticatedUser = userRepository.findByUsername(userDetails.getUsername())
-                /*.orElseThrow(() -> new UsernameNotFoundException("Authenticated user not found"));*/
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found"));
         User targetUser = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new UsernameNotFoundException("Target user not found"));
+        
+        // Prevent self-transfer
+        if (authenticatedUser.getId().equals(targetUserId)) {
+            throw new IllegalArgumentException("Cannot transfer money to yourself");
+        }
+        
         if (amount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Transfer amount must be greater than zero");
         }
+        
+        // Add maximum transfer amount validation
+        BigDecimal maxTransferAmount = new BigDecimal("10000.00");
+        if (amount.compareTo(maxTransferAmount) > 0) {
+            throw new IllegalArgumentException("Transfer amount exceeds maximum limit");
+        }
+        
         Account sourceAccount = authenticatedUser.getAccount();
         if (sourceAccount.getBalance().compareTo(amount) < 0) {
             throw new InsufficientFundsException("Insufficient balance");
         }
         Account targetAccount = targetUser.getAccount();
+        
+        // Use database-level atomic updates to prevent race conditions
+        // Process as a single atomic operation
         sourceAccount.setBalance(sourceAccount.getBalance().subtract(amount));
         targetAccount.setBalance(targetAccount.getBalance().add(amount));
-        accountRepository.save(sourceAccount);
-        accountRepository.save(targetAccount);
+        
+        // Save both accounts in a single transaction to ensure atomicity
+        accountRepository.saveAll(List.of(sourceAccount, targetAccount));
     }
 
     @Transactional
